@@ -213,6 +213,27 @@
             child="rear_chassis"
             rpy="0 0 0"
             xyz="${0*scale} ${-79*scale} ${0*scale}" />
+
+
+        
+        <link name="camera">
+            <visual>
+                <geometry>
+                    <box size="0.02 0.03 0.001"/> <!-- Simple box representation -->
+                </geometry>
+                <material name="RED" />
+            </visual>
+            <collision>
+                <geometry>
+                    <box size="0.03 0.03 0.001"/>
+                </geometry>
+            </collision>
+        </link>
+        <xacro:create_fixed_joint
+            parent="nose_chassis"
+            child="camera"
+            rpy="${-pi*7/12} 0 0"
+            xyz="${0*scale} ${0*scale} ${0*scale}" />
     </xacro:macro>
 
 
