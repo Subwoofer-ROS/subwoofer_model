@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="Subwoofer_builders">
 
-    <xacro:include filename="$(find subwoofer_model)/urdf/imports/constants.xacro"/>
-    <xacro:include filename="$(find subwoofer_model)/urdf/imports/materials.xacro"/>
+    <xacro:include filename="$(find subwoofer_model)/model/imports/constants.xacro"/>
+    <xacro:include filename="$(find subwoofer_model)/model/imports/materials.xacro"/>
 
 
 
@@ -67,7 +67,7 @@
             <parent link="${parent}"/>
             <child link="${child}"/>
             <axis xyz="${axis}"/>
-            <limit effort="1000.0" lower="${lower}" upper="${upper}" velocity="${velocity}"/>
+            <limit effort="1.0" lower="${lower}" upper="${upper}" velocity="${velocity}"/>
             <origin rpy="${rpy}" xyz="${xyz}"/>
             <dynamics damping="0.05" friction="0.05"/>
         </joint>
@@ -89,7 +89,7 @@
         <xacro:create_fixed_joint
             parent="base_link"
             child="baseplate"
-            rpy="0 0 0"
+            rpy="0 0 -${pi/2}"
             xyz="0 0 0" />
 
         <xacro:create_link
@@ -250,7 +250,7 @@
         <xacro:create_revolute_joint
             parent="${parent}"
             child="${name}_hip_servo"
-            axis="1 0 0"
+            axis="-1 0 0"
             lower="-0.78"
             upper="0.78"
             velocity="0.5"
@@ -278,11 +278,11 @@
         <xacro:create_revolute_joint
             parent="${name}_hip"
             child="${name}_midlimb_servo"
-            axis="1 0 0"
+            axis="-1 0 0"
             lower="-1.57"
             upper="1.57"
             velocity="0.5"
-            rpy="0.8 0 0"
+            rpy="0 0 0"
             xyz="0 0 0" />
 
         <xacro:create_link
@@ -318,11 +318,11 @@
         <xacro:create_revolute_joint
             parent="${name}_midlimb"
             child="${name}_wrist_servo"
-            axis="1 0 0"
-            lower="-2.6"
-            upper="1.1"
+            axis="-1 0 0"
+            lower="-${1/3*pi}"
+            upper="${4/5*pi}"
             velocity="0.5"
-            rpy="-1.6 0 1.57075"
+            rpy="0 0 1.57075"
             xyz="0 0 0" />
         
         <xacro:create_link
@@ -336,6 +336,18 @@
             child="${name}_wrist"
             rpy="0 0 3.1415"
             xyz="${53*scale} 0 0" />
+
+        <xacro:create_link 
+            name="${name}_foot"
+            mesh="${foot_mesh}"
+            xyz="${foot_xyz}"
+            rpy="${foot_rpy}"
+            mass="${foot_mass}" />
+        <xacro:create_fixed_joint 
+            parent="${name}_wrist"
+            child="${name}_foot"
+            rpy="${-pi/9} 0 0"
+            xyz="${26*scale} ${-6*scale} ${-135*scale}" />
     </xacro:macro>
 
 
@@ -382,7 +394,7 @@
             lower="-1.57"
             upper="1.57"
             velocity="0.5"
-            rpy="-0.8 0 0"
+            rpy="0 0 0"
             xyz="0 0 0" />
 
         <xacro:create_link
@@ -419,10 +431,10 @@
             parent="${name}_midlimb"
             child="${name}_wrist_servo"
             axis="1 0 0"
-            lower="-1.1"
-            upper="2.6"
+            lower="-${1/3*pi}"
+            upper="${4/5*pi}"
             velocity=".5"
-            rpy="1.6 0 1.57075"
+            rpy="0 0 1.57075"
             xyz="${0*scale} ${0*scale} ${0*scale}" />
 
         <xacro:create_link
@@ -436,5 +448,17 @@
             child="${name}_wrist"
             rpy="0 0 0"
             xyz="${53*scale} ${0*scale} ${0*scale}" />
+
+        <xacro:create_link 
+            name="${name}_foot"
+            mesh="${foot_mesh}"
+            xyz="${foot_xyz}"
+            rpy="${foot_rpy}"
+            mass="${foot_mass}" />
+        <xacro:create_fixed_joint 
+            parent="${name}_wrist"
+            child="${name}_foot"
+            rpy="${-pi/9} 0 0"
+            xyz="${-26.5*scale} ${-6*scale} ${-135*scale}" />
     </xacro:macro>
 </robot>
