@@ -216,7 +216,7 @@
 
 
         
-        <link name="camera">
+        <link name="camera_link">
             <visual>
                 <geometry>
                     <box size="0.02 0.03 0.001"/> <!-- Simple box representation -->
@@ -231,7 +231,7 @@
         </link>
         <xacro:create_fixed_joint
             parent="nose_chassis"
-            child="camera"
+            child="camera_link"
             rpy="${-pi*7/12} 0 0"
             xyz="${0*scale} ${0*scale} ${0*scale}" />
     </xacro:macro>
